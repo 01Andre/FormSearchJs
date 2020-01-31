@@ -1,19 +1,38 @@
 <?php
-$pdo = new PDO('mysql:host=localhost;dbname=g_pro', 'root', 'kokokiki');
+$pdo = new PDO('mysql:host=localhost;dbname=g_pro', 'root', '');
 
 $query = "SELECT * FROM agents";
 $statement = $pdo->query($query);
 $agents = $statement->fetchAll();
 $test = false;
 
+
+function namesOfInputFilled($post)
+{
+    $namesOfInputFilled = "";
+    foreach ($post as $rubric => $answer) {
+        if ($answer) {
+            $namesOfInputFilled .= ucfirst($rubric);
+        }
+        return $namesOfInputFilled;
+    }
+}
+
+    function getQueryWithNniFilled($post)
+    {
+        return 'SELECT nni, nom, prenom FROM agents WHERE nni = ' .$post['nni'];
+    }
+
+    function getQueryWithNniNameFilled($post)
+    {
+        return 'SELECT * FROM agents WHERE nni = ' .$post['nni'] . ' AND ' . $post['nom'];
+    }
+
+
 if (!empty($_POST)){
-    if ($_POST['nni'] && empty($_POST['nom'])){
-        $query = 'SELECT nni, nom, prenom FROM agents WHERE nni = ' .$_POST['nni'];
-    }
-    elseif($_POST['nom'] && $_POST['nni']){
-        $query = 'SELECT * FROM agents WHERE nni = ' .$_POST['nni'] . ' AND ' . $_POST['nom'];
-        $test = true;
-    }
+
+    $methodToExecute = "getQueryWith".namesOfInputFilled($_POST)."Filled";
+    $query = $methodToExecute($_POST);
     $statement = $pdo->query($query);
     $nni = $statement->fetchAll();
 }
@@ -34,7 +53,7 @@ if (!empty($_POST)){
     <title>Hello, world!</title>
 </head>
 <body>
-<form method="POST" action="index.php">
+<form method="POST" action="">
     <div class="row justify-content-around">
         <div class="col-4">
             <select  name="nni">
