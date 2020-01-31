@@ -14,12 +14,16 @@ if (!empty($_POST)){
         $query = 'SELECT * FROM agents WHERE nni = ' .$_POST['nni'] . ' AND ' . $_POST['nom'];
         $test = true;
     }
+    elseif($_POST['prenom'] && $_POST['nni']){
+        $query = 'SELECT * FROM agents WHERE nni = ' .$_POST['nni'] . ' AND ' . $_POST['nom'];
+        $test = true;
+    }
     $statement = $pdo->query($query);
     $nni = $statement->fetchAll();
 }
 ?>
-<?php var_dump($_POST['nom']) ?>
-<?php var_dump($nni) ?>
+<?php //var_dump($_POST['nom']) ?>
+<?php //var_dump($nni) ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -63,10 +67,15 @@ if (!empty($_POST)){
         <div class="col-4">
             <select name="prenom">
                 <option value="">Tous les prenoms</option>
+                <?php if(!$nni) : ?>
                 <?php foreach ($agents as $agent => $i) { ?>
                     <option value="<?php echo $i['prenom'] ?>" selected><?php echo $i['prenom']?></option>
                 <?php } ?>
-
+                <?php else: ?>
+                <?php foreach ($nni as $agent => $i) { ?>
+                <option value="<?php echo $i['prenom'] ?>" selected><?php echo $i['prenom']?></option>
+                <?php } ?>
+                <?php endif ?>
             </select>
         </div>
     </div>
@@ -84,7 +93,7 @@ if (!empty($_POST)){
     <?php foreach ($agents as $agent => $i) { ?>
 <!--        --><?php //var_dump($nni[0]['nni']) ?>
 
-        <?php if ($nni[0]['nni'] === $i['nni'] || empty($nni)): ?>
+        <?php if ($nni[0]['nni'] === $i['nni'] || empty($nni) || $nni=""): ?>
     <tr>
             <td><?php echo $i['nni'] ?></td>
             <td><?php echo $i['nom'] ?></td>
