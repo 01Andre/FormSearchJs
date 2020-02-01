@@ -35,14 +35,13 @@ if ($_POST){
     $methodToExecute = "getQueryWith".namesOfInputFilled($_POST)."Filled";
     $query = $methodToExecute($_POST);
     $statement = $pdo->query($query);
-    $nni = $statement->fetchAll();
+    $agents = $statement->fetchAll();
 }
 ?>
 
 <!doctype html>
 <html lang="en">
 <head><?php var_dump($_POST['nom']) ?>
-<?php var_dump($nni) ?>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -103,13 +102,11 @@ if ($_POST){
     <?php foreach ($agents as $agent => $i) { ?>
 <!--        --><?php //var_dump($nni[0]['nni']) ?>
 
-        <?php if ($nni[0]['nni'] === $i['nni'] || empty($nni)): ?>
     <tr>
             <td><?php echo $i['nni'] ?></td>
             <td><?php echo $i['nom'] ?></td>
             <td><?php echo $i['prenom'] ?></td>
         </tr>
-        <?php endif; ?>
     <?php } ?>
     </tbody>
 </table>
