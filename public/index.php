@@ -56,16 +56,16 @@ if ($_POST){
 <form method="POST" action="">
     <div class="row justify-content-around">
         <div class="col-4">
-            <select  name="nni">
-                <option value="">Tous les nni</option>
+          <input  name="nni" class="custom-select w-75" type="text" list="nnis" placeholder="054859" />
+          <datalist id="nnis">
                 <?php foreach ($agents as $agent => $i) { ?>
                     <option value="<?php echo $i['nni'] ?>" selected><?php echo $i['nni']?></option>
                 <?php } ?>
 
-            </select>
+          </datalist>
         </div>
         <div class="col-4">
-            <input  name="nom" class="custom-select" type="text" list="names" />
+            <input  name="nom" class="custom-select w-75" type="text" list="names" placeholder="Dupont">
             <datalist id="names">
                 <?php if(!$nni) : ?>
                     <?php foreach ($agents as $agent => $i) { ?>
@@ -79,13 +79,15 @@ if ($_POST){
             </datalist>
         </div>
         <div class="col-4">
-            <select name="prenom">
+          <input  name="prenom" class="custom-select w-75" type="text" list="firstnames" placeholder="Robert">
+          <datalist id="firstnames">
+
                 <option value="">Tous les prenoms</option>
                 <?php foreach ($agents as $agent => $i) { ?>
                     <option value="<?php echo $i['prenom'] ?>" selected><?php echo $i['prenom']?></option>
                 <?php } ?>
 
-            </select>
+          </datalist>
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
