@@ -10,19 +10,25 @@ if (!empty($_POST)){
     if ($_POST['nni'] && empty($_POST['nom'])){
         $query = 'SELECT nni, nom, prenom FROM agents WHERE nni = ' .$_POST['nni'];
     }
-    elseif($_POST['nom'] && $_POST['nni']){
-        $query = 'SELECT * FROM agents WHERE nni = ' .$_POST['nni'] . ' AND ' . $_POST['nom'];
-        $test = true;
+    elseif ($_POST['nom'] && empty($_POST['nni'])){
+        $query = 'SELECT nni,nom,prenom FROM agents WHERE nom =  \''.$_POST['nom'].'\'';
     }
-    elseif($_POST['prenom'] && $_POST['nni']){
-        $query = 'SELECT * FROM agents WHERE nni = ' .$_POST['nni'] . ' AND ' . $_POST['nom'];
-        $test = true;
+    elseif ($_POST['prenom'] && empty($_POST['nom'])){
+        $query = 'SELECT nni,nom,prenom FROM agents WHERE prenom =  \''.$_POST['prenom'].'\'';
     }
+//    elseif($_POST['nom'] && $_POST['nni']){
+//        $query = 'SELECT * FROM agents WHERE nni = ' .$_POST['nni'] . ' AND nom = ' . $_POST['nom'];
+//        $test = true;
+//    }
+//    elseif($_POST['prenom'] && $_POST['nni']){
+//        $query = 'SELECT * FROM agents WHERE nni = ' .$_POST['nni'] . ' AND ' . $_POST['nom'];
+//        $test = true;
+//    }
     $statement = $pdo->query($query);
-    $nni = $statement->fetchAll();
+    $agents = $statement->fetchAll();
 }
 ?>
-<?php //var_dump($_POST['nom']) ?>
+<?php var_dump($agents) ?>
 <?php //var_dump($nni) ?>
 <!doctype html>
 <html lang="en">
@@ -37,12 +43,12 @@ if (!empty($_POST)){
 
     <title>Hello, world!</title>
 </head>
-<body>
+<body class="container">
 <form method="POST" action="index.php">
     <div class="row justify-content-around">
         <div class="col-4">
             <select  name="nni">
-                <option value="">Tous les nni</option>
+                <option value>Tous les nni</option>
                 <?php foreach ($agents as $agent => $i) { ?>
                     <option value="<?php echo $i['nni'] ?>" selected><?php echo $i['nni']?></option>
                 <?php } ?>
@@ -51,7 +57,7 @@ if (!empty($_POST)){
         </div>
         <div class="col-4">
             <select name="nom">
-                <option value="">Tous les noms</option>
+                <option value>Tous les noms</option>
                 <?php if(!$nni) : ?>
                 <?php foreach ($agents as $agent => $i) { ?>
                     <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom']?></option>
@@ -66,7 +72,7 @@ if (!empty($_POST)){
         </div>
         <div class="col-4">
             <select name="prenom">
-                <option value="">Tous les prenoms</option>
+                <option value>Tous les prenoms</option>
                 <?php if(!$nni) : ?>
                 <?php foreach ($agents as $agent => $i) { ?>
                     <option value="<?php echo $i['prenom'] ?>" selected><?php echo $i['prenom']?></option>
@@ -79,7 +85,9 @@ if (!empty($_POST)){
             </select>
         </div>
     </div>
+    <div class="row justify-content-center mt-4">
     <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 </form>
 <table class="table table-dark">
     <thead>
@@ -93,13 +101,13 @@ if (!empty($_POST)){
     <?php foreach ($agents as $agent => $i) { ?>
 <!--        --><?php //var_dump($nni[0]['nni']) ?>
 
-        <?php if ($nni[0]['nni'] === $i['nni'] || empty($nni) || $nni=""): ?>
+<!--        --><?php //if ($nni[0]['nni'] === $i['nni'] || ($_POST)): ?>
     <tr>
             <td><?php echo $i['nni'] ?></td>
             <td><?php echo $i['nom'] ?></td>
             <td><?php echo $i['prenom'] ?></td>
         </tr>
-        <?php endif; ?>
+<!--        --><?php //endif; ?>
     <?php } ?>
     </tbody>
 </table>
