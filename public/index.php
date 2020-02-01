@@ -7,28 +7,15 @@ $agents = $statement->fetchAll();
 $test = false;
 
 if (!empty($_POST)){
-    if ($_POST['nni'] && empty($_POST['nom'])){
-        $query = 'SELECT nni, nom, prenom FROM agents WHERE nni = ' .$_POST['nni'];
-    }
-    elseif ($_POST['nom'] && empty($_POST['nni'])){
-        $query = 'SELECT nni,nom,prenom FROM agents WHERE nom =  \''.$_POST['nom'].'\'';
-    }
-    elseif ($_POST['prenom'] && empty($_POST['nom'])){
-        $query = 'SELECT nni,nom,prenom FROM agents WHERE prenom =  \''.$_POST['prenom'].'\'';
-    }
-//    elseif($_POST['nom'] && $_POST['nni']){
-//        $query = 'SELECT * FROM agents WHERE nni = ' .$_POST['nni'] . ' AND nom = ' . $_POST['nom'];
-//        $test = true;
-//    }
-//    elseif($_POST['prenom'] && $_POST['nni']){
-//        $query = 'SELECT * FROM agents WHERE nni = ' .$_POST['nni'] . ' AND ' . $_POST['nom'];
-//        $test = true;
-//    }
+        $query = 'SELECT nni, nom, prenom FROM agents WHERE prenom like  \''.$_POST['test'].'%'.'\' OR nom like \''.$_POST['test'].'%'.'\' OR nni like \''.$_POST['test'].'%'.'\'';
+
+
+
     $statement = $pdo->query($query);
     $agents = $statement->fetchAll();
 }
 ?>
-<?php var_dump($agents) ?>
+<?php var_dump($_POST['test']) ?>
 <?php //var_dump($nni) ?>
 <!doctype html>
 <html lang="en">
@@ -46,44 +33,9 @@ if (!empty($_POST)){
 <body class="container">
 <form method="POST" action="index.php">
     <div class="row justify-content-around">
-        <div class="col-4">
-            <select  name="nni">
-                <option value>Tous les nni</option>
-                <?php foreach ($agents as $agent => $i) { ?>
-                    <option value="<?php echo $i['nni'] ?>" selected><?php echo $i['nni']?></option>
-                <?php } ?>
-
-            </select>
-        </div>
-        <div class="col-4">
-            <select name="nom">
-                <option value>Tous les noms</option>
-                <?php if(!$nni) : ?>
-                <?php foreach ($agents as $agent => $i) { ?>
-                    <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom']?></option>
-                <?php } ?>
-                    <?php else: ?>
-                    <?php foreach ($nni as $agent => $i) { ?>
-                        <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom']?></option>
-                    <?php } ?>
-                <?php endif ?>
-
-            </select>
-        </div>
-        <div class="col-4">
-            <select name="prenom">
-                <option value>Tous les prenoms</option>
-                <?php if(!$nni) : ?>
-                <?php foreach ($agents as $agent => $i) { ?>
-                    <option value="<?php echo $i['prenom'] ?>" selected><?php echo $i['prenom']?></option>
-                <?php } ?>
-                <?php else: ?>
-                <?php foreach ($nni as $agent => $i) { ?>
-                <option value="<?php echo $i['prenom'] ?>" selected><?php echo $i['prenom']?></option>
-                <?php } ?>
-                <?php endif ?>
-            </select>
-        </div>
+        <label for="site-search">Search the site:</label>
+        <input type="search" id="site-search" name="test"
+               aria-label="Search through site content">
     </div>
     <div class="row justify-content-center mt-4">
     <button type="submit" class="btn btn-primary">Submit</button>
