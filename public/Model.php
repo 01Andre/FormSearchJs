@@ -55,3 +55,8 @@ function getQueryWithNomPrenomFilled($post)
 {
     return "SELECT nni, nom, prenom FROM agents WHERE prenom = '" .$post['prenom']."' AND nom = '". $post['nom']."'";
 }
+
+function getQueryWithNniPrenomFilled($post)
+{
+    return "SELECT nni, nom, prenom FROM agents WHERE prenom = '" .$post['prenom']."' AND nni = ". $post['nni'];
+}
