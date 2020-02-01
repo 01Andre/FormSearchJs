@@ -3,15 +3,6 @@ require "Model.php";
 
 
 
-
-
-if ($_POST){
-
-    $methodToExecute = "getQueryWith".namesOfInputFilled($_POST)."Filled";
-    $query = $methodToExecute($_POST);
-    $statement = $pdo->query($query);
-    $nni = $statement->fetchAll();
-}
 ?>
 
 <!doctype html>

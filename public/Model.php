@@ -7,6 +7,14 @@ $query = "SELECT * FROM agents";
 $statement = $pdo->query($query);
 $agents = $statement->fetchAll();
 $test = false;
+if ($_POST){
+
+    $methodToExecute = "getQueryWith".namesOfInputFilled($_POST)."Filled";
+    $query = $methodToExecute($_POST);
+    $statement = $pdo->query($query);
+    var_dump($statement->fetchAll());
+    //$nni = $statement->fetchAll();
+}
 
 function namesOfInputFilled($post)
 {
@@ -24,7 +32,16 @@ function getQueryWithNniFilled($post)
     return 'SELECT nni, nom, prenom FROM agents WHERE nni = ' .$post['nni'];
 }
 
-function getQueryWithNniNameFilled($post)
+function getQueryWithNniNomFilled($post)
 {
     return 'SELECT * FROM agents WHERE nni = ' .$post['nni'] . ' AND ' . $post['nom'];
+}
+
+function getQueryWithNomFilled($post)
+{
+    return 'SELECT * FROM agents WHERE nom = ' .$post['nom'];
+}
+
+function getQueryWithPrenomFilled($post){
+    return 'SELECT * FROM agents WHERE prenom = ' .$post['prenom'];
 }
