@@ -1,5 +1,6 @@
 <?php
-$pdo = new PDO('mysql:host=localhost;dbname=g_pro', 'root', '5857Sk03@');
+require "dbinc.php";
+$pdo = new PDO('mysql:host=localhost;dbname=g_pro', 'root', $password);
 
 $query = "SELECT * FROM agents";
 $statement = $pdo->query($query);
