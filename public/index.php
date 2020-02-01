@@ -1,5 +1,5 @@
 <?php
-require "dbinc.php";
+require "../dbinc.php";
 $pdo = new PDO('mysql:host=localhost;dbname=g_pro', 'root', $password);
 
 $query = "SELECT * FROM agents";
@@ -67,15 +67,9 @@ if ($_POST){
         <div class="col-4">
             <input  name="nom" type="text" list="names" />
             <datalist id="names">
-                <?php if(!$nni) : ?>
                     <?php foreach ($agents as $agent => $i) { ?>
                         <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom']?></option>
                     <?php } ?>
-                <?php else: ?>
-                    <?php foreach ($nni as $agent => $i) { ?>
-                        <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom']?></option>
-                    <?php } ?>
-                <?php endif ?>
             </datalist>
         </div>
         <div class="col-4">
@@ -100,8 +94,6 @@ if ($_POST){
     </thead>
     <tbody>
     <?php foreach ($agents as $agent => $i) { ?>
-<!--        --><?php //var_dump($nni[0]['nni']) ?>
-
     <tr>
             <td><?php echo $i['nni'] ?></td>
             <td><?php echo $i['nom'] ?></td>
