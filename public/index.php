@@ -29,7 +29,6 @@ function namesOfInputFilled($post)
         return 'SELECT * FROM agents WHERE nni = ' .$post['nni'] . ' AND ' . $post['nom'];
     }
 
-var_dump($_POST);
 if ($_POST){
 
     $methodToExecute = "getQueryWith".namesOfInputFilled($_POST)."Filled";
@@ -66,7 +65,7 @@ if ($_POST){
             </select>
         </div>
         <div class="col-4">
-            <input  name="nom" type="text" list="names" />
+            <input  name="nom" class="custom-select" type="text" list="names" />
             <datalist id="names">
                 <?php if(!$nni) : ?>
                     <?php foreach ($agents as $agent => $i) { ?>
