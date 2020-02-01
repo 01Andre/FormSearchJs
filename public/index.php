@@ -1,42 +1,5 @@
 <?php
-require "../dbinc.php";
-$pdo = new PDO('mysql:host=localhost;dbname=g_pro', 'root', $password);
-
-$query = "SELECT * FROM agents";
-$statement = $pdo->query($query);
-$agents = $statement->fetchAll();
-$test = false;
-
-
-function namesOfInputFilled($post)
-{
-    $namesOfInputFilled = "";
-    foreach ($post as $rubric => $answer) {
-        if ($answer) {
-            $namesOfInputFilled .= ucfirst($rubric);
-        }
-        return $namesOfInputFilled;
-    }
-}
-
-    function getQueryWithNniFilled($post)
-    {
-        return 'SELECT nni, nom, prenom FROM agents WHERE nni = ' .$post['nni'];
-    }
-
-    function getQueryWithNniNameFilled($post)
-    {
-        return 'SELECT * FROM agents WHERE nni = ' .$post['nni'] . ' AND ' . $post['nom'];
-    }
-
-var_dump($_POST);
-if ($_POST){
-
-    $methodToExecute = "getQueryWith".namesOfInputFilled($_POST)."Filled";
-    $query = $methodToExecute($_POST);
-    $statement = $pdo->query($query);
-    $agents = $statement->fetchAll();
-}
+require "Model.php";
 ?>
 
 <!doctype html>
@@ -56,16 +19,16 @@ if ($_POST){
 <form method="POST" action="">
     <div class="row justify-content-around">
         <div class="col-4">
-            <select  name="nni">
-                <option value="">Tous les nni</option>
+          <input  name="nni" class="custom-select w-75" type="text" list="nnis" placeholder="054859" />
+          <datalist id="nnis">
                 <?php foreach ($agents as $agent => $i) { ?>
                     <option value="<?php echo $i['nni'] ?>" selected><?php echo $i['nni']?></option>
                 <?php } ?>
 
-            </select>
+          </datalist>
         </div>
         <div class="col-4">
-            <input  name="nom" type="text" list="names" />
+            <input  name="nom" class="custom-select w-75" type="text" list="names" placeholder="Dupont">
             <datalist id="names">
                     <?php foreach ($agents as $agent => $i) { ?>
                         <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom']?></option>
@@ -73,13 +36,15 @@ if ($_POST){
             </datalist>
         </div>
         <div class="col-4">
-            <select name="prenom">
+          <input  name="prenom" class="custom-select w-75" type="text" list="firstnames" placeholder="Robert">
+          <datalist id="firstnames">
+
                 <option value="">Tous les prenoms</option>
                 <?php foreach ($agents as $agent => $i) { ?>
                     <option value="<?php echo $i['prenom'] ?>" selected><?php echo $i['prenom']?></option>
                 <?php } ?>
 
-            </select>
+          </datalist>
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
