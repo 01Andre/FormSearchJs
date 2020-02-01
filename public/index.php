@@ -1,5 +1,5 @@
 <?php
-$pdo = new PDO('mysql:host=localhost;dbname=g_pro', 'root', '');
+$pdo = new PDO('mysql:host=localhost;dbname=g_pro', 'root', '5857Sk03@');
 
 $query = "SELECT * FROM agents";
 $statement = $pdo->query($query);
@@ -28,8 +28,8 @@ function namesOfInputFilled($post)
         return 'SELECT * FROM agents WHERE nni = ' .$post['nni'] . ' AND ' . $post['nom'];
     }
 
-
-if (!empty($_POST)){
+var_dump($_POST);
+if ($_POST){
 
     $methodToExecute = "getQueryWith".namesOfInputFilled($_POST)."Filled";
     $query = $methodToExecute($_POST);
@@ -37,11 +37,11 @@ if (!empty($_POST)){
     $nni = $statement->fetchAll();
 }
 ?>
-<?php var_dump($_POST['nom']) ?>
-<?php var_dump($nni) ?>
+
 <!doctype html>
 <html lang="en">
-<head>
+<head><?php var_dump($_POST['nom']) ?>
+<?php var_dump($nni) ?>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -65,19 +65,18 @@ if (!empty($_POST)){
             </select>
         </div>
         <div class="col-4">
-            <select name="nom">
-                <option value="">Tous les noms</option>
+            <input  name="nom" type="text" list="names" />
+            <datalist id="names">
                 <?php if(!$nni) : ?>
-                <?php foreach ($agents as $agent => $i) { ?>
-                    <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom']?></option>
-                <?php } ?>
-                    <?php else: ?>
+                    <?php foreach ($agents as $agent => $i) { ?>
+                        <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom']?></option>
+                    <?php } ?>
+                <?php else: ?>
                     <?php foreach ($nni as $agent => $i) { ?>
                         <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom']?></option>
                     <?php } ?>
                 <?php endif ?>
-
-            </select>
+            </datalist>
         </div>
         <div class="col-4">
             <select name="prenom">
