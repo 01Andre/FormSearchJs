@@ -21,43 +21,19 @@ require "Model.php";
 <form method="POST" action="">
   <div class="row justify-content-around">
     <div class="col-4">
-      <input id="nni" name="nni" class="custom-select w-75" type="text" list="nnis" placeholder="054859"/>
-      <datalist id="nnis">
-          <?php foreach ($agents as $agent => $i) { ?>
-            <option value="<?php echo $i['nni'] ?>" selected><?php echo $i['nni'] ?></option>
-          <?php } ?>
-
-      </datalist>
+        <input type="text" id="name" class="search-key" placeholder="name">
     </div>
     <div class="col-4">
-      <input id="lastname" name="nom" class="custom-select w-75" type="text" list="names" placeholder="Dupont">
-      <datalist id="names">
-          <?php if (!$nni) : ?>
-              <?php foreach ($agents as $agent => $i) { ?>
-              <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom'] ?></option>
-              <?php } ?>
-          <?php else: ?>
-              <?php foreach ($nni as $agent => $i) { ?>
-              <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom'] ?></option>
-              <?php } ?>
-          <?php endif ?>
-      </datalist>
+        <input type="text" id="lastname" class="search-key" placeholder="lastname">
     </div>
+
     <div class="col-4">
-      <input id="firstname" name="prenom" class="custom-select w-75" type="text" list="firstnames" placeholder="Robert">
-      <datalist id="firstnames">
-
-        <option value="">Tous les prenoms</option>
-          <?php foreach ($agents as $agent => $i) { ?>
-            <option value="<?php echo $i['prenom'] ?>" selected><?php echo $i['prenom'] ?></option>
-          <?php } ?>
-
-      </datalist>
+        <input type="text" id="number" class="search-key" placeholder="number">
     </div>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-<table class="table table-dark">
+<table class="table table-dark" id="MI6">
   <thead>
   <tr>
     <th scope="col">nni</th>
@@ -71,9 +47,9 @@ require "Model.php";
       <?php // var_dump($agent) ?>
 
     <tr id="tr<?= $agent ?>" class="">
-      <td><?php echo $i['nni'] ?></td>
-      <td><?php echo $i['nom'] ?></td>
-      <td><?php echo $i['prenom'] ?></td>
+      <td data-input="name" ><?php echo $i['nni'] ?></td>
+      <td data-input="lastname"><?php echo $i['nom'] ?></td>
+      <td data-input="number"><?php echo $i['prenom'] ?></td>
     </tr>
   <?php } ?>
   </tbody>
@@ -90,35 +66,24 @@ require "Model.php";
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 
-<script type="text/javascript">
-    document.onload = initialize();
+<script>
+    var $filterableRows = $('#MI6').find('tr').not(':first'),
+        $inputs = $('.search-key');
 
-    function initialize() {
+    $inputs.on('input', function() {
 
+        $filterableRows.hide().filter(function() {
+            return $(this).find('td').filter(function() {
 
-        let nniInput = document.getElementById('nni');
-        let lastnameInput = document.getElementById('lastname');
-        let firsnameInput = document.getElementById('firstname');
-        nniInput.addEventListener("keyup", function () {
-            checkCompatibleNni(nniInput)
-        });
-    }
+                var tdText = $(this).text().toLowerCase(),
+                    inputValue = $('#' + $(this).data('input')).val().toLowerCase();
 
-    function checkCompatibleNni(nniInput) {
-        let title = document.getElementById('documentTitle');
-        let arrayLength = title.dataset.length;
+                return tdText.indexOf(inputValue) != -1;
 
-        for (let i = 0; i < arrayLength; i++) {
-            let container = document.getElementById('tr' + i);
-            if (!(container.firstElementChild.innerHTML.match(nniInput.value))) {
-                container.classList.add("d-none");
-            } else {
-                container.classList.remove('d-none');
-            }
+            }).length == $(this).find('td').length;
+        }).show();
 
-        }
-
-    }
+    });
 </script>
 </body>
 </html>
