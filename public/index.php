@@ -16,9 +16,10 @@ require "Model.php";
   <title id="documentTitle" data-length= <?= count($prospects) ?>>Hello, world!</title>
 </head>
 <body>
-
-  <div class="row justify-content-around">
+<div class="container">
+  <div class="row justify-content-around m-5">
     <div class="col-4">
+      <label for="nni">NNI</label>
       <input id="nni" name="nni" class="custom-select w-75" type="text" list="nnis" placeholder="054859"/>
       <datalist id="nnis">
           <?php foreach ($prospects as $key => $prospect) : ?>
@@ -28,10 +29,12 @@ require "Model.php";
       </datalist>
     </div>
     <div class="col-4">
+      <label for="lastname">Nom</label>
       <input id="lastname" name="lastname" class="custom-select w-75" type="text" list="names" placeholder="Dupont">
     </div>
     <div class="col-4">
-      <input id="firstname" name="first" class="custom-select w-75" type="text" list="firstnames" placeholder="Robert">
+      <label for="firstname">Prénom</label>
+      <input id="firstname" name="firstname" class="custom-select w-75" type="text" list="firstnames" placeholder="Robert">
       <datalist id="firstnames">
 
           <?php foreach ($prospects as $key => $prospect) : ?>
@@ -42,26 +45,27 @@ require "Model.php";
     </div>
   </div>
 
-<table class="table table-dark">
-  <thead>
-  <tr>
-    <th scope="col">nni</th>
-    <th scope="col">nom</th>
-    <th scope="col">prénom</th>
-  </tr>
-  </thead>
-  <tbody>
-
-  <?php foreach ($prospects as $key => $prospect): ?>
-
-    <tr id="tr<?= $key ?>" class="">
-      <td><?= $prospect['nni'] ?></td>
-      <td><?= $prospect['lastname'] ?></td>
-      <td><?= $prospect['firstname'] ?></td>
+  <table class="table table-dark">
+    <thead>
+    <tr>
+      <th scope="col">nni</th>
+      <th scope="col">nom</th>
+      <th scope="col">prénom</th>
     </tr>
-  <?php endforeach; ?>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+
+    <?php foreach ($prospects as $key => $prospect): ?>
+
+      <tr id="tr<?= $key ?>" class="">
+        <td><?= $prospect['nni'] ?></td>
+        <td><?= $prospect['lastname'] ?></td>
+        <td><?= $prospect['firstname'] ?></td>
+      </tr>
+    <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
