@@ -96,26 +96,38 @@ require "Model.php";
 
         let nniInput = document.getElementById('nni');
         let lastnameInput = document.getElementById('lastname');
-        let firsnameInput = document.getElementById('firstname');
+        let firstnameInput = document.getElementById('firstname');
         nniInput.addEventListener("keyup", function () {
-            checkCompatibleNni(nniInput)
+            checkCompatibleUsers()
         });
+        lastnameInput.addEventListener("keyup", function () {
+            checkCompatibleUsers();
+        });
+        firstnameInput.addEventListener("keyup", function () {
+            checkCompatibleUsers();
+        });
+
     }
 
-    function checkCompatibleNni(nniInput) {
+    function checkCompatibleUsers() {
         let title = document.getElementById('documentTitle');
         let arrayLength = title.dataset.length;
+        let nniValue = document.getElementById('nni').value;
+        let firstnameValue = document.getElementById('firstname').value;
+        let lastnameValue = document.getElementById('lastname').value;
 
         for (let i = 0; i < arrayLength; i++) {
             let container = document.getElementById('tr' + i);
-            if (!(container.firstElementChild.innerHTML.match(nniInput.value))) {
-                container.classList.add("d-none");
+            if (
+                (container.children[0].firstChild.valueOf().data.match(nniValue)) &&
+                (container.children[1].firstChild.valueOf().data.match(lastnameValue)) &&
+                (container.children[2].firstChild.valueOf().data.match(firstnameValue))
+            ) {
+                container.classList.remove("d-none");
             } else {
-                container.classList.remove('d-none');
+                container.classList.add('d-none');
             }
-
         }
-
     }
 </script>
 </body>
