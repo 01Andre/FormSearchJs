@@ -3,8 +3,8 @@ require "Model.php";
 ?>
 
 <!doctype html>
-<html lang="en">
-<head><?php var_dump($_POST['nom']) ?>
+<html lang="fr">
+<head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,48 +13,35 @@ require "Model.php";
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-  <title id="documentTitle" data-length= <?= count($agents) ?>>Hello, world!</title>
+  <title id="documentTitle" data-length= <?= count($prospects) ?>>Hello, world!</title>
 </head>
 <body>
-<form method="POST" action="">
+
   <div class="row justify-content-around">
     <div class="col-4">
       <input id="nni" name="nni" class="custom-select w-75" type="text" list="nnis" placeholder="054859"/>
       <datalist id="nnis">
-          <?php foreach ($agents as $agent => $i) { ?>
-            <option value="<?php echo $i['nni'] ?>" selected><?php echo $i['nni'] ?></option>
-          <?php } ?>
+          <?php foreach ($prospects as $key => $prospect) : ?>
+            <option value="<?= $prospect['nni'] ?>" selected><?= $prospect['nni'] ?></option>
+          <?php endforeach; ?>
 
       </datalist>
     </div>
     <div class="col-4">
-      <input id="lastname" name="nom" class="custom-select w-75" type="text" list="names" placeholder="Dupont">
-      <datalist id="names">
-          <?php if (!$nni) : ?>
-              <?php foreach ($agents as $agent => $i) { ?>
-              <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom'] ?></option>
-              <?php } ?>
-          <?php else: ?>
-              <?php foreach ($nni as $agent => $i) { ?>
-              <option value="<?php echo $i['nom'] ?>" selected><?php echo $i['nom'] ?></option>
-              <?php } ?>
-          <?php endif ?>
-      </datalist>
+      <input id="lastname" name="lastname" class="custom-select w-75" type="text" list="names" placeholder="Dupont">
     </div>
     <div class="col-4">
-      <input id="firstname" name="prenom" class="custom-select w-75" type="text" list="firstnames" placeholder="Robert">
+      <input id="firstname" name="first" class="custom-select w-75" type="text" list="firstnames" placeholder="Robert">
       <datalist id="firstnames">
 
-        <option value="">Tous les prenoms</option>
-          <?php foreach ($agents as $agent => $i) { ?>
-            <option value="<?php echo $i['prenom'] ?>" selected><?php echo $i['prenom'] ?></option>
-          <?php } ?>
+          <?php foreach ($prospects as $key => $prospect) : ?>
+            <option value="<?= $prospect['firstname'] ?>" selected><?= $prospect['firstname'] ?></option>
+          <?php endforeach; ?>
 
       </datalist>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+
 <table class="table table-dark">
   <thead>
   <tr>
@@ -65,15 +52,14 @@ require "Model.php";
   </thead>
   <tbody>
 
-  <?php foreach ($agents as $agent => $i) { ?>
-      <?php // var_dump($agent) ?>
+  <?php foreach ($prospects as $key => $prospect): ?>
 
-    <tr id="tr<?= $agent ?>" class="">
-      <td><?php echo $i['nni'] ?></td>
-      <td><?php echo $i['nom'] ?></td>
-      <td><?php echo $i['prenom'] ?></td>
+    <tr id="tr<?= $key ?>" class="">
+      <td><?= $prospect['nni'] ?></td>
+      <td><?= $prospect['lastname'] ?></td>
+      <td><?= $prospect['firstname'] ?></td>
     </tr>
-  <?php } ?>
+  <?php endforeach; ?>
   </tbody>
 </table>
 <!-- Optional JavaScript -->
@@ -97,12 +83,15 @@ require "Model.php";
         let nniInput = document.getElementById('nni');
         let lastnameInput = document.getElementById('lastname');
         let firstnameInput = document.getElementById('firstname');
+
         nniInput.addEventListener("keyup", function () {
             checkCompatibleUsers()
         });
+
         lastnameInput.addEventListener("keyup", function () {
             checkCompatibleUsers();
         });
+
         firstnameInput.addEventListener("keyup", function () {
             checkCompatibleUsers();
         });
@@ -119,9 +108,9 @@ require "Model.php";
         for (let i = 0; i < arrayLength; i++) {
             let container = document.getElementById('tr' + i);
             if (
-                (container.children[0].firstChild.valueOf().data.match(nniValue)) &&
-                (container.children[1].firstChild.valueOf().data.match(lastnameValue)) &&
-                (container.children[2].firstChild.valueOf().data.match(firstnameValue))
+                (container.children[0].firstChild.valueOf().data.toLowerCase().match(nniValue.toLowerCase())) &&
+                (container.children[1].firstChild.valueOf().data.toLowerCase().match(lastnameValue.toLowerCase())) &&
+                (container.children[2].firstChild.valueOf().data.toLowerCase().match(firstnameValue.toLowerCase()))
             ) {
                 container.classList.remove("d-none");
             } else {
